@@ -1,0 +1,9 @@
+$(document).ready(function(){
+$('#2').click(function(){
+$('#country').fadeIn('slow');
+});
+$('#1').click(function(){
+$('#country').fadeOut('slow');
+$('input[name="country"]').attr('value','');
+});
+});

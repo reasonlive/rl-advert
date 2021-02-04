@@ -1,0 +1,77 @@
+.serfcontrol-play { background: url(img/adv/serf-play.png) no-repeat left top; }
+.serfcontrol-pause { background: url(img/adv/serf-pause.png) no-repeat left top; }
+.serfcontrol-moder { background: url(img/adv/serf-moder.png) no-repeat left top; }
+.serfcontrol-postmoder { background: url(img/adv/serf-postmoder.png) no-repeat left top; }
+.serfcontrol-block { background: url(img/adv/serf-block.png) no-repeat left top; }
+.serfcontrol-ban { background: url(img/adv/serf-ban.png) no-repeat left top; }
+
+table.adv-serf {
+    text-align: center;
+    border-collapse: separate;
+    line-height: 1.4;
+}
+table.adv-serf td {
+    color: #135B11;
+    text-align: left;
+    font-size: 12px;
+    padding: 6px 4px;
+    border-top: solid 2px #FFFFFF;
+    border-bottom: solid 1px #DBDFBE;
+    background: #F3F2E7 url(img/bg-1.gif) repeat-x top;
+}
+table.adv-serf td a {
+    text-decoration: none;
+    border: none;
+    outline: none;
+}
+table.adv-serf td.budget {
+    text-align: center;
+    font-size: 12px;
+    background: #F3F2E7 url(img/bg-1.gif) repeat-x top;
+    /*    background: #F0EFE1 url(img/bg-2.gif) repeat-x top;*/
+    border-left: solid 1px #E3E6D1;
+    padding: 6px 10px;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+table.adv-serf td.ext {
+    background-color: #F3F2E7;
+    background-image: none;
+    border-top: none;
+}
+table.adv-serf td.ext-comp {
+    color: #FFFFFF;
+    background-color: #BF808B;
+    background-image: none;
+    border-top: none;
+    padding: 10px;
+}
+
+table.adv-serf td.ext-viptask {
+    color: #5D97D8;
+    background-color: #F9F7B9;
+    background-image: none;
+    border-top: none;
+    padding: 10px;
+}
+table.adv-serf td.ext-viptask a {
+    color: #005EB8;
+    font-weight: bold;
+}
+table.adv-serf td.ext-viptask a:hover {
+    color: #E67D00;
+}
+
+a.workstatus-yes, a.workstatus-no, a.workstatus-wait {
+    color: #ffffff;
+    float: left;
+    font-size: 11px;
+    text-align: center;
+    display: block;
+    height: 21px;
+    width: 34px;
+    outline: none;
+    border: none;
+    padding-top: 5px;
+}
+a.workstatus-yes { background: url(img/task_yes.png) no-repeat left top; }

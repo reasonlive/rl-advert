@@ -1,0 +1,17 @@
+order_num: 23529; SHP_ITEM: 40; Summ: 1600.000000; Date: 16.10.2017 17:11
+order_num: 26539; SHP_ITEM: 40; Summ: 5000.000000; Date: 15.11.2017 06:50
+order_num: 32084; SHP_ITEM: 5; Summ: 3.150000; Date: 13.01.2018 00:46
+order_num: 32952; SHP_ITEM: 1; Summ: 21.000000; Date: 23.01.2018 12:49
+order_num: 33069; SHP_ITEM: 2; Summ: 21.500000; Date: 24.01.2018 16:59
+order_num: 38119; SHP_ITEM: 1; Summ: 30.000000; Date: 16.04.2018 09:39
+order_num: 39488; SHP_ITEM: 1; Summ: 20.000000; Date: 06.05.2018 09:48
+order_num: 41051; SHP_ITEM: 2; Summ: 17.000000; Date: 31.05.2018 10:31
+order_num: 41201; SHP_ITEM: 6; Summ: 6.000000; Date: 02.06.2018 14:42
+order_num: 43159; SHP_ITEM: 1; Summ: 120.000000; Date: 26.06.2018 19:21
+order_num: 43507; SHP_ITEM: 2; Summ: 90.500000; Date: 01.07.2018 07:56
+order_num: 45148; SHP_ITEM: 1; Summ: 90.500000; Date: 26.07.2018 18:31
+order_num: 45706; SHP_ITEM: 1; Summ: 10.000000; Date: 03.08.2018 12:59
+order_num: 47474; SHP_ITEM: 8; Summ: 12.500000; Date: 24.08.2018 00:38
+order_num: 49121; SHP_ITEM: 1; Summ: 100.000000; Date: 13.09.2018 12:49
+order_num: 59367; SHP_ITEM: 2; Summ: 100.000000; Date: 08.01.2019 19:31
+order_num: 60863; SHP_ITEM: 1; Summ: 30.000000; Date: 25.01.2019 02:52

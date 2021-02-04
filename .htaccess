@@ -1,0 +1,87 @@
+php_flag display_errors on
+php_value session.gc_maxlifetime 432000
+AddDefaultCharset UTF-8
+DirectoryIndex index.php
+RewriteEngine On
+
+#ErrorDocument 404 /404.php
+
+<FilesMatch ".(avi|mp3|mp4|flv|swf|wmv|png|css|gif|jpeg|jpg|rar|zip|xml|rss)$|^$">
+Order deny,allow
+Allow from all
+</FilesMatch>
+
+# Основной домен
+RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+# Главная
+RewriteRule ^index.html$ index.php [L]
+RewriteRule ^\/$ index.php [L]
+
+RewriteRule ^404(/?)+$ index.php?menu=404 [L]
+RewriteRule ^account/exit(/?)+$ index.php?menu=account&title=exit [L]
+RewriteRule ^adminose(/?)+$ pages/admin/index.php [L]
+RewriteRule ^adminose/exit(/?)+$ pages/admin/index.php?menu=exit [L]
+
+
+
+#Реклама
+RewriteRule ^advert(/?)+$ index.php?menu=advert [L]
+
+#Визиты
+RewriteRule ^visits(/?)+$ index.php?menu=visits [L]
+
+#Конкурс
+RewriteRule ^konkurs(/?)+$ index.php?menu=konkurs [L]
+
+#Статистика выплаты
+RewriteRule ^stat_pay(/?)+$ index.php?menu=stat_pay [L]
+
+
+
+#Footer---------------------
+# Правила
+RewriteRule ^rules(/?)+$ index.php?menu=rules [L]
+
+# Контакты
+RewriteRule ^contacts(/?)+$ index.php?menu=contacts [L]
+
+# FAQ
+RewriteRule ^faq(/?)+$ index.php?menu=faq [L]
+
+#Соглашение
+RewriteRule ^agreement(/?)+$ index.php?menu=agreement [L]
+
+
+
+# Новости
+RewriteRule ^news(/?)+$ index.php?menu=news [L]
+
+# Уровни
+RewriteRule ^lvl(/?)+$ index.php?menu=lvl [L]
+
+# О нас
+RewriteRule ^about(/?)+$ index.php?menu=about [L]
+
+# TOP
+RewriteRule ^top(/?)+$ index.php?menu=top [L]
+
+# Статистика
+RewriteRule ^stats(/?)+$ index.php?menu=stats [L]
+
+# Регистрация
+#RewriteRule ^signup/key/(.*)(/?)+$ index.php?menu=signup&key=$1 [L]
+RewriteRule ^signup(/?)+$ index.php?menu=signup [L]
+RewriteRule ^signup/register(.*)+$ index.php?menu=signup&register=$1 [L]
+RewriteRule ^signup/login(.*)+$ index.php?menu=signup&login=$1 [L]
+RewriteRule ^signup/recovery(.*)+$ index.php?menu=signup&recovery=$1 [L]
+
+
+
+#Аккаунт Юзера
+RewriteRule ^account(/?)+$ index.php?menu=account [L]
+RewriteRule ^account/profile(/?)+$ index.php?menu=account&title=profile [L]
+RewriteRule ^account/1serfnet(/?)+$ index.php?menu=account&title=1serfnet [L]
+RewriteRule ^account/money(/?)+$ index.php?menu=account&title=money [L]
+

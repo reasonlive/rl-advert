@@ -1,0 +1,40 @@
+[2016-01-02 02:07:56] request: https://sp-money.yandex.ru/oauth/token; 
+[2016-01-02 02:07:56] response: https://sp-money.yandex.ru/oauth/token; http_code = 0; curl_errno = 60; curl_error = Peer certificate cannot be authenticated with known CA certificates
+[2016-01-02 02:11:06] request: https://sp-money.yandex.ru/oauth/token; 
+[2016-01-02 02:11:06] response: https://sp-money.yandex.ru/oauth/token; http_code = 0; curl_errno = 60; curl_error = Peer certificate cannot be authenticated with known CA certificates
+[2016-01-02 02:15:27] request: https://sp-money.yandex.ru/oauth/token; 
+[2016-01-02 02:15:27] response: https://sp-money.yandex.ru/oauth/token; http_code = 200; curl_errno = 0; curl_error = 
+[2016-01-02 02:16:01] request: https://sp-money.yandex.ru/oauth/token; 
+[2016-01-02 02:16:01] response: https://sp-money.yandex.ru/oauth/token; http_code = 200; curl_errno = 0; curl_error = 
+[2016-01-02 02:16:01] request: https://money.yandex.ru/api/account-info; token = *64B1; 
+[2016-01-02 02:16:02] response: https://money.yandex.ru/api/account-info; token = *64B1; http_code = 200; curl_errno = 0; curl_error = 
+[2016-01-02 23:41:12] request: https://sp-money.yandex.ru/oauth/token; 
+[2016-01-02 23:41:12] response: https://sp-money.yandex.ru/oauth/token; http_code = 200; curl_errno = 0; curl_error = 
+[2016-01-02 23:41:12] request: https://money.yandex.ru/api/account-info; token = *60F4; 
+[2016-01-02 23:41:12] response: https://money.yandex.ru/api/account-info; token = *60F4; http_code = 200; curl_errno = 0; curl_error = 
+[2018-08-29 21:48:24] request: https://sp-money.yandex.ru/oauth/token; 
+[2018-08-29 21:48:24] response: https://sp-money.yandex.ru/oauth/token; http_code = 303; curl_errno = 0; curl_error = 
+[2018-08-29 21:59:27] request: https://money.yandex.ru/oauth/token; 
+[2018-08-29 21:59:27] response: https://money.yandex.ru/oauth/token; http_code = 200; curl_errno = 0; curl_error = 
+[2018-08-29 21:59:27] request: https://money.yandex.ru/api/account-info; token = *55FB; 
+[2018-08-29 21:59:28] response: https://money.yandex.ru/api/account-info; token = *55FB; http_code = 200; curl_errno = 0; curl_error = 
+[2018-08-30 00:44:05] request: https://money.yandex.ru/oauth/token; 
+[2018-08-30 00:44:06] response: https://money.yandex.ru/oauth/token; http_code = 200; curl_errno = 0; curl_error = 
+[2018-08-30 00:44:06] request: https://money.yandex.ru/api/account-info; token = *; 
+[2018-08-30 00:44:06] response: https://money.yandex.ru/api/account-info; token = *; http_code = 400; curl_errno = 0; curl_error = 
+[2018-08-30 00:44:23] request: https://money.yandex.ru/oauth/token; 
+[2018-08-30 00:44:24] response: https://money.yandex.ru/oauth/token; http_code = 200; curl_errno = 0; curl_error = 
+[2018-08-30 00:44:24] request: https://money.yandex.ru/api/account-info; token = *; 
+[2018-08-30 00:44:24] response: https://money.yandex.ru/api/account-info; token = *; http_code = 400; curl_errno = 0; curl_error = 
+[2018-08-30 00:51:29] request: https://money.yandex.ru/oauth/token; 
+[2018-08-30 00:51:29] response: https://money.yandex.ru/oauth/token; http_code = 200; curl_errno = 0; curl_error = 
+[2018-08-30 00:51:29] request: https://money.yandex.ru/api/account-info; token = *9B3A; 
+[2018-08-30 00:51:30] response: https://money.yandex.ru/api/account-info; token = *9B3A; http_code = 200; curl_errno = 0; curl_error = 
+[2018-09-03 14:59:28] request: https://money.yandex.ru/oauth/token; 
+[2018-09-03 14:59:28] response: https://money.yandex.ru/oauth/token; http_code = 200; curl_errno = 0; curl_error = 
+[2018-09-03 14:59:28] request: https://money.yandex.ru/api/account-info; token = *2205; 
+[2018-09-03 14:59:28] response: https://money.yandex.ru/api/account-info; token = *2205; http_code = 200; curl_errno = 0; curl_error = 
+[2018-10-29 18:02:32] request: https://money.yandex.ru/oauth/token; 
+[2018-10-29 18:02:32] response: https://money.yandex.ru/oauth/token; http_code = 200; curl_errno = 0; curl_error = 
+[2018-10-29 18:02:32] request: https://money.yandex.ru/api/account-info; token = *4E21; 
+[2018-10-29 18:02:32] response: https://money.yandex.ru/api/account-info; token = *4E21; http_code = 200; curl_errno = 0; curl_error = 

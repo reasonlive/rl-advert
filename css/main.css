@@ -1,0 +1,348 @@
+.flex-center{
+	display:flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+.flex-col-center{
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+
+body{
+	font-family: Jura;
+	padding:0;margin:0;
+	background: #00254a;
+}
+
+.header{
+	width:100%;
+	height:70px;
+}
+.footer{
+	width:100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	flex-direction: row;
+}
+
+
+.main{
+	display: flex;
+
+}
+.main-inner{
+	width:60%;
+}
+
+section{
+	width:100%;
+}
+
+aside{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width:25%;
+	height:100%;
+	border: 1px solid black;
+}
+
+
+
+
+/*********HEADER MENU**************/
+
+.logo{
+	position: absolute;
+	left:0;top:15px;
+	color: white;
+	font-size: 25px;
+	margin: 5px 0 0 0;
+
+}
+
+li{
+	list-style-type:  none;
+	display: inline;
+}
+a{
+	text-decoration: none;
+	color:white;
+}
+
+.anc_menu{
+	
+	color:white;
+	margin-right:20px;
+}
+
+
+.enter-box{
+	position:absolute;
+	right:0;top:15px;
+	display: flex;
+	
+	
+}
+.enter-btn{
+	color: white;
+	font-weight: bold;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid white;
+	background: #0a2a3a;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height:40px;
+	width:150px;
+	transition: all .5s;
+}
+
+.enter-btn:first-child{
+	margin-right: 5px;
+}
+
+.enter-btn:hover{
+	cursor: pointer;
+	background: #002e5b;
+	color: #57bfe1;
+}
+
+/*********HEADER MENU**************/
+
+
+/*******USER MENU***********/
+
+.ava{
+	border-radius: 50%;
+}
+
+.user-menu{
+	background: #0b364b;
+	color:#a1acbd;
+}
+
+.menu-options{
+	width:100%;
+}
+
+.link-opener{
+	overflow: hidden;
+	transition:all 1s;
+}
+
+.menu-options p{
+	padding:0;margin:0;
+	height:30px;
+	text-align: center;
+}
+.menu-options p:hover{
+	cursor:pointer;
+	background: #0a2a3a;
+	color: white;
+}
+.user-menu-ex{
+	background: crimson;
+	position: absolute;
+	top:70px;left:300px;
+	border-radius: 10px;
+	
+}
+.user-menu-ex p{
+	
+	
+}
+.user-menu-ex p:hover{
+	cursor:pointer;
+	background: indianred;
+}
+.menu-btn span{
+	position: absolute;
+	left:200px;top:28px;
+	background: #0b364b;
+	width:70px;
+	display: block;
+	border-radius: 5px;
+}
+
+.menu-btn span:hover{
+	cursor: pointer;
+	font-weight: bold;
+	background: crimson;
+}
+
+/*******USER MENU***********/
+
+
+
+
+/********MAIN PAGE****************/
+
+
+.st1{
+	width:300px;
+	height: 250px;
+	margin-top:5px;
+	color:white;
+}
+.count{
+	color: black !important;
+	font-size:30px;
+	font-weight: bold;
+	width:200px;
+	height: 200px;
+	border-radius: 50%;
+	-moz-border-radius:50%;
+	-webkit-border-radius:50%;
+	background: #dc5762;
+	border:5px solid #c0dbf5;
+}
+
+
+.selectPS{
+    display: inline-block;
+    width: 95px;
+    vertical-align: top;
+    text-align: center;
+    padding: 5px 0px 10px 0px;
+    margin: 5px 0px;
+    border: 2px solid #cb8851;
+    background: #fff;	
+}
+.selectPS .imagesps{
+    width: 95px;
+    box-sizing: border-box;
+    height: 95px;
+    display: inline-block;
+}
+.selectPS label{
+    font-size: 8pt;
+    display: block;
+    margin-top: 10px;
+}
+
+
+/********MAIN PAGE****************/
+
+/*******REGISTRATION AND LOGIN PAGE***********/
+/************signup*************/
+
+.enter-popup{
+	background: url("/img/new/background.png");
+	
+  	height: 800px;
+	z-index: 9999;
+	width:100%;
+}
+.form-wrap{
+	font-weight: bold;
+	width:400px;
+	background: #fefefe;
+	border-radius: 10px;
+	
+	margin: 0 auto;
+}
+.form-wrap input{
+	height: 40px;
+	width: 300px;
+	outline: none;
+
+}
+input[type=checkbox]{
+width:20px !important;
+}
+input:focus{
+	border: 1px solid blue;
+}
+
+
+
+.error-popup{
+	position: absolute;
+	margin:auto auto;
+	z-index: 9999;
+	width:300px;
+	height: 200px;
+	color: red;
+	background: firebrick;
+}
+
+.btn{
+	border-radius: 5px;
+	border:0;
+	height:40px;
+	width:100%;
+	color:white;
+	font-weight: bold;
+	font-size:12px;
+}
+
+.btn:hover{
+	cursor: pointer;
+	border:1px solid green;
+}
+.btn-extra{
+	width: 105px !important;
+	background: #202021;
+}
+.btn-main{
+width:300px !important;
+background: #5466fe;
+
+}
+
+
+/*******REGISTRATION AND LOGIN PAGE***********/
+
+
+/********ADVERTISE DESCRIPTION PAGE***********/
+/*********advertise*************/
+
+.advert{
+	width:100%;
+	
+}
+.advert h2{
+	color:wheat;
+}
+
+
+.advert-block{
+	width:100%;
+	height:300px;
+	display: flex;
+	flex-direction: column;
+	overflow-y: scroll;
+
+}
+
+.advert-block div{
+	text-align: center;
+	width:100%;
+	border-top:1px solid black;
+	border-bottom:1px solid black;
+	background: rgba(245, 222, 179, 0.5);
+}
+
+.advert-block div p{
+	color:black;
+}
+.advert-block div p:first-child:hover{
+
+	cursor:pointer;
+	color:sandybrown;
+}
+.advert-block div p:first-child{
+	font-weight: bold;
+	font-size: 20px;
+}
+
+
+

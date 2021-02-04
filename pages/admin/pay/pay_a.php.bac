@@ -1,0 +1,222 @@
+<?php
+if (!DEFINED("ADMINKA")) {die ("Hacking attempt!");}
+
+echo '<h3 class="sp" style="margin-top:0; padding-top:0;"><b>Автовыплаты</b></h3>';
+
+$sql = $mysqli->query("SELECT `price` FROM `tb_config` WHERE `item`='pay_comis' AND `howmany`='1'");
+$pay_comis1 = $sql->fetch_object()->price;
+
+$sql = $mysqli->query("SELECT `price` FROM `tb_config` WHERE `item`='pay_comis' AND `howmany`='2'");
+$pay_comis2 = $sql->fetch_object()->price;
+
+$sql = $mysqli->query("SELECT `price` FROM `tb_config` WHERE `item`='pay_comis_lp' AND `howmany`='1'");
+$pay_comis1_lp = $sql->fetch_object()->price;
+
+$sql = $mysqli->query("SELECT `price` FROM `tb_config` WHERE `item`='pay_comis_lp' AND `howmany`='2'");
+$pay_comis2_lp = $sql->fetch_object()->price;
+
+
+if(isset($_GET["option"]) && isset($_POST["id"]) && $_GET["option"]=="auto_pay") {
+	$id = (isset($_POST["id"])) ? intval($_POST["id"]) : false;
+
+	$sql = $mysqli->query("SELECT * FROM `tb_history` WHERE `id`='$id' AND `status_pay`='0' AND (`method`='WebMoney' OR `method`='Payeer' OR `method`='YandexMoney' OR `method`='Qiwi' OR `method`='AdvCash' OR `method`='MAESTRO' OR `method`='VISA' OR `method`='MasterCard' OR `method`='Beeline' OR `method`='MTS' OR `method`='Megaphone') AND `status`='' AND `tipo`='0'");
+	if($sql->num_rows>0) {
+		$row = $sql->fetch_array();
+		$username = $row["user"];
+		$money_pay = abs($row["amount"]);
+		$method = $row["method"];
+
+		$sql = $mysqli->query("SELECT `tranid` FROM `tb_statistics` WHERE `id`='1'");
+		$tranid = $sql->fetch_object()->tranid;
+
+		if($method=="WebMoney") {
+			require_once("".$_SERVER['DOCUMENT_ROOT']."/auto_pay_req/wmxml.inc.php");
+
+			$site_w = $mysqli->query("SELECT `sitewmr` FROM `tb_site` WHERE `id`='1'");
+			$site_wmr = $site_w->fetch_object()->sitewmr;
+			$wmr_users = $row["wmr"];
+			$period = "0";
+			$pcode = "";
+			$desc = "Выплата с $url #$tranid пользователю $username. Благодарим Вас за работу!";
+			$wminvid = "0";
+			$onlyauth = "1";
+
+			if(abs($row["amount"])>1.25) {
+				$summa_topay = p_floor( ((abs($row["amount"]) * (100 - $pay_comis1)/100) - $pay_comis2), 2);
+			}else{
+				$summa_topay = (abs($row["amount"]) - 0.01 - $pay_comis2);
+			}
+
+			$r = _WMXML2($tranid,$site_wmr,$wmr_users,$summa_topay,$period,$pcode,$desc,$wminvid,$onlyauth);
+			$kod_result = $r["retval"];
+			//echo "Расшифровка - ".$r["retdesc"]."<br>";
+
+			if($kod_result==0) {
+				$mysqli->query("UPDATE `tb_statistics` SET `tranid`=`tranid`+1 WHERE `id`='1'") or die($mysqli->error);
+				$mysqli->query("UPDATE `tb_history` SET `status_pay`='1', `date`='".DATE("d.m.Y H:i",time())."',`time`='".time()."' WHERE `id`='$id' AND `status_pay`='0'") or die($mysqli->error);
+				$mysqli->query("UPDATE `tb_users` SET `money_out`=`money_out`+'$money_pay' WHERE `username`='$username'") or die($mysqli->error);
+				$mysqli->query("UPDATE `tb_statistics` SET `viplat`=`viplat`+'1', `sumpay`=`sumpay`+'$money_pay' WHERE `id`='1'") or die($mysqli->error);
+				
+				$sql_stat_pay = $mysqli->query("SELECT * FROM `tb_pay_stat` WHERE `type`='WebMoney'");
+	               if($sql_stat_pay->num_rows>0) {
+		               $mysqli->query("UPDATE `tb_pay_stat` SET `".strtolower(DATE("D"))."`=`".strtolower(DATE("D"))."`+'$money_pay' WHERE `type`='WebMoney'") or die($mysqli->error);
+				    }else{
+					   $mysqli->query("INSERT INTO `tb_pay_stat` (`type`,`".strtolower(DATE("D"))."`) VALUES('WebMoney','$money_pay')") or die($mysqli->error);
+				 }
+
+				echo '<br><b style="color:#2E8B57">Автовыплата #'.$tranid.' успешно выполнена пользователю '.$username.'</b><br>';
+			}else{
+				echo '<br><b style="color:#FF0000">Ошибка выплаты! Код ошибки '.$kod_result.'.</b><br>';
+			}
+
+		}elseif($method=="Payeer") {
+
+			require_once("".$_SERVER['DOCUMENT_ROOT']."/merchant/lp_xml_inc.php");
+			$currency = "RUR";
+			$liqpay_users = $row["wmr"];
+			$description = "Payment of ".strtoupper($_SERVER["HTTP_HOST"]).": order $tranid, user $username";
+
+			if(abs($row["amount"])>1.25) {
+				$summa_topay = p_floor( ((abs($row["amount"]) * (100 - $pay_comis1_lp)/100) - $pay_comis2_lp), 2);
+			}else{
+				$summa_topay = (abs($row["amount"]) - 0.01 - $pay_comis2_lp);
+			}
+
+			$r = LP_XML_SEND_MONEY ($liqpay_users,$summa_topay,$currency,$description);
+			$kod_result = $r["status"];
+			//echo $r["status"]."<br>".$r["code"]."<br>".$r["description"]."<br>".$r["response_description"]."<br>";
+
+			if($kod_result=="success") {
+				$mysqli->query("UPDATE `tb_statistics` SET `tranid`=`tranid`+1 WHERE `id`='1'") or die($mysqli->error);
+				$mysqli->query("UPDATE `tb_history` SET `status_pay`='1', `date`='".DATE("d.m.Y H:i",time())."',`time`='".time()."' WHERE `id`='$id' AND `status_pay`='0'") or die($mysqli->error);
+				$mysqli->query("UPDATE `tb_users` SET `money_out`=`money_out`+'$money_pay' WHERE `username`='$username'") or die($mysqli->error);
+				$mysqli->query("UPDATE `tb_statistics` SET `viplat`=`viplat`+'1', `sumpay`=`sumpay`+'$money_pay' WHERE `id`='1'") or die($mysqli->error);
+
+				echo '<br><b style="color:#2E8B57">Автовыплата #'.$tranid.' успешно выполнена пользователю '.$username.'</b><br>';
+			}else{
+				echo '<br><b style="color:#FF0000">Ошибка выплаты! Код ошибки: '.$kod_result.', '.$r["response_description"].'</b><br>';
+			}
+
+		}elseif($method=="YandexMoney") {
+			$ymoney_users = $row["wmr"];
+
+			require("".$_SERVER['DOCUMENT_ROOT']."/merchant/yandexmoney/ym_config.php");
+			require("".$_SERVER['DOCUMENT_ROOT']."/merchant/yandexmoney/ym_outresult.php");
+			$ym = new ymAPI($client_id, "".$_SERVER['DOCUMENT_ROOT']."/yandex/redirect_url.php");
+			$message1 = iconv('Windows-1251', 'UTF-8', 'Выплата с '.$url.' #'.$tranid.' пользователю '.$username.'. Благодарим Вас за работу!');
+			$message2 = iconv('Windows-1251', 'UTF-8', 'Выплата с '.$url.' #'.$tranid.' пользователю '.$username.'. Благодарим Вас за работу!');
+			$request = $ym->requestPaymentP2P($token_ym, $ymoney_users, $money_pay, $message2, $message1);
+			$process = $ym->processPayment($token_ym, $request['request_id']);
+			$kod_result = $process["status"];
+
+			if($kod_result=="success") {
+				$mysqli->query("UPDATE `tb_statistics` SET `tranid`=`tranid`+'1' WHERE `id`='1'") or die($mysqli->error);
+				$mysqli->query("UPDATE `tb_history` SET `status_pay`='1', `date`='".DATE("d.m.Y H:i",time())."',`time`='".time()."' WHERE `id`='$id' AND `status_pay`='0'") or die($mysqli->error);
+				$mysqli->query("UPDATE `tb_users` SET `money_out`=`money_out`+'$money_pay' WHERE `username`='$username'") or die($mysqli->error);
+				$mysqli->query("UPDATE `tb_statistics` SET `viplat`=`viplat`+'1', `sumpay`=`sumpay`+'$money_pay' WHERE `id`='1'") or die($mysqli->error);
+
+				echo '<br><b style="color:#2E8B57">Автовыплата на Яндекс.Деньги #'.$tranid.' успешно выполнена пользователю '.$username.'</b><br>';
+			}else{
+				echo '<br><b style="color:#FF0000">Ошибка выплаты! Код ошибки: '.$kod_result.'</b><br>';
+			}
+		}
+	}else{
+		echo '<br><b style="color:#FF0000">Ошибка! Выплаты с таким id #'.$id.' нет, либо выплата уже была сделана!</b><br>';
+	}
+}
+
+if(isset($_GET["option"]) && isset($_POST["id"]) && $_GET["option"]=="pay_r") {
+	$id = (isset($_POST["id"])) ? intval($_POST["id"]) : false;
+
+	$sql = $mysqli->query("SELECT * FROM `tb_history` WHERE `id`='$id' AND `status_pay`='0' AND (`method`='WebMoney' OR `method`='Payeer' OR `method`='YandexMoney' OR `method`='Qiwi' OR `method`='AdvCash' OR `method`='MAESTRO' OR `method`='VISA' OR `method`='MasterCard' OR `method`='Beeline' OR `method`='MTS' OR `method`='Megaphone') AND `status`='' AND `tipo`='0'");
+	if($sql->num_rows>0) {
+		$row = $sql->fetch_array();
+		$username = $row["user"];
+		$money_pay = abs($row["amount"]);
+
+		$mysqli->query("UPDATE `tb_history` SET `status_pay`='1', `date`='".DATE("d.m.Y H:i",time())."',`time`='".time()."' WHERE `id`='$id' AND `status_pay`='0'") or die($mysqli->error);
+		$mysqli->query("UPDATE `tb_users` SET `money_out`=`money_out`+'$money_pay' WHERE `username`='$username'") or die($mysqli->error);
+		$mysqli->query("UPDATE `tb_statistics` SET `viplat`=`viplat`+'1', `sumpay`=`sumpay`+'$money_pay' WHERE `id`='1'") or die($mysqli->error);
+		$mysqli->query("UPDATE `tb_history_pay` SET `status_pay`='0', `time`='".time()."' WHERE `user`='$username'") or die($mysqli->error);
+
+//		echo '<br><b style="color:#2E8B57">Выплата #'.$tranid.' успешно выполнена пользователю '.$username.'</b><br>';
+	}else{
+		echo '<br><b style="color:#FF0000">Ошибка! Выплаты с таким id #'.$id.' нет, либо выплата уже была сделана (или отменена)!</b><br>';
+	}
+}
+
+if(isset($_GET["option"]) && isset($_POST["id"]) && $_GET["option"]=="dell_pay") {
+	$id = (isset($_POST["id"])) ? intval($_POST["id"]) : false;
+
+	$sql = $mysqli->query("SELECT * FROM `tb_history` WHERE `id`='$id' AND `status_pay`='0' AND (`method`='WebMoney' OR `method`='Payeer' OR `method`='YandexMoney' OR `method`='Qiwi' OR `method`='AdvCash' OR `method`='MAESTRO' OR `method`='VISA' OR `method`='MasterCard' OR `method`='Beeline' OR `method`='MTS' OR `method`='Megaphone') AND `status`='' AND `tipo`='0'");
+	if($sql->num_rows>0) {
+		$row = $sql->fetch_array();
+		$username = $row["user"];
+		$money_pay = abs($row["amount"]);
+
+		$mysqli->query("UPDATE `tb_users` SET `money`=`money`+'$money_pay' WHERE `username`='$username'") or die($mysqli->error);
+		$mysqli->query("UPDATE `tb_history` SET `status_pay`='2', `date`='".DATE("d.m.Y H:i",time())."',`time`='".time()."' WHERE `id`='$id' AND `status_pay`='0'") or die($mysqli->error);
+		
+		//$sql_history_pay = $mysqli->query("SELECT * FROM `tb_history_pay` WHERE `user`='$username'");
+	               //if(mysql_num_rows($sql_history_pay)>0) {
+		$mysqli->query("UPDATE `tb_history_pay` SET `status_pay`='0' ,`time`='0' WHERE `user`='$username'") or die($mysqli->error);
+				    //}else{
+					   //$mysqli->query("INSERT INTO `tb_history_pay` (`user`,`status_pay`,`time`) VALUES('$username','0','0')") or die$mysqli->error);
+				 //}
+
+		echo '<br><b style="color:#2E8B57">Выпплата пользователю '.$username.' отменена, деньги возвращены на баланс аккаунта!</b><br>';
+	}else{
+		echo '<br><b style="color:#FF0000">Ошибка! Выплаты с таким id #'.$id.' нет, либо выплата уже была сделана (или отменена)!</b><br>';
+	}
+}
+
+$sql = $mysqli->query("SELECT * FROM `tb_history` WHERE `status_pay`='0' AND (`method`='WebMoney' OR `method`='Payeer' OR `method`='YandexMoney') AND `status`='' AND `tipo`='0' ORDER BY `id` ASC");
+$kol = $sql->num_rows;
+if($kol>0) {
+	$sql_s = $mysqli->query("SELECT sum(amount) FROM `tb_history` WHERE `status_pay`='0' AND (`method`='WebMoney' OR `method`='Payeer' OR `method`='YandexMoney') AND `status`='' AND `tipo`='0'");
+	$all_count1 = $sql_s->fetch_array();
+ $sumpay_wait = $all_count1['0'];
+	//$sumpay_wait = mysql_result($sql_s,0,0);
+
+	echo '<br><b>Всего:</b> <b style="color:#FF0000;">'.$kol.'</b> на сумму <b style="color:#FF0000;">'.p_floor($sumpay_wait, 2).'</b> руб.';
+}
+
+echo '<table width="100%" border="1" style="border-collapse: collapse;">';
+echo '<tr bgcolor="#CCC">';
+echo '<th>Номер счета дата</th>';
+echo '<th>Объем оплаты</th>';
+echo '<th>Примечание</th>';
+echo '<th>№</th>';
+echo '<th>Оплачено</th>';
+echo '<th>Автовыплата</th>';
+echo '<th>Отмена</th>';
+echo '</tr>';
+
+$sum_m = 0;
+if($kol>0) {
+	while ($row = $sql->fetch_array()) {
+		echo '<tr align="center">';
+
+		echo '<td><span style="color:blue;"><b>'.$row["method"].'</b></span> : '.$row["wmr"].';<br/>'.$row["date"].';</td>';
+
+		if(abs($row["amount"])>1.25 && $row["method"]!="YandexMoney") {
+			echo '<td>'.p_floor( ((abs($row["amount"]) * (100 - $pay_comis1)/100) - $pay_comis2), 2).';</td>';
+		}elseif($row["method"]=="YandexMoney") {
+			echo '<td>'.abs($row["amount"]).';</td>';
+		}else{
+			echo '<td>'.(abs($row["amount"]) - 0.01 - $pay_comis2).';</td>';
+		}
+
+		echo '<td>Выплата с '.$url.' пользователю - '.$row["user"].'. Благодарим Вас за работу!;</td>';
+		echo '<td>'.$row["tran_id"].'</td>';
+		echo '<td><form method="post" action="'.$_SERVER['PHP_SELF'].'?op='.intval($_GET["op"]).'&amp;option=pay_r"><input type="hidden" name="id" value="'.$row["id"].'"><input type="submit" class="sub-green" value="Оплачено"></form></td>';
+		echo '<td><form method="post" action="'.$_SERVER['PHP_SELF'].'?op='.intval($_GET["op"]).'&amp;option=auto_pay"><input type="hidden" name="id" value="'.$row["id"].'"><input type="submit" class="sub-blue" value="Выплатить"></form></td>';
+		echo '<td><form method="post" action="'.$_SERVER['PHP_SELF'].'?op='.intval($_GET["op"]).'&amp;option=dell_pay"><input type="hidden" name="id" value="'.$row["id"].'"><input type="submit" class="sub-red" value="Отменить заказ"></form></td>';
+		echo '</tr>';
+	}
+	echo '</table>';
+}else{
+	echo '<tr><td colspan="7"><div align="center" style="color:#FF0000; font-weight:bold;">Выплат в ожидании нет.</div></td></tr>';
+	echo '</table>';
+}
+?>

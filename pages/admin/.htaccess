@@ -1,0 +1,8 @@
+php_flag display_errors on
+php_value error_reporting 2047
+#Order deny,allow
+#Deny from all
+#Allow from 94.51.109.122
+#Allow from 185.31.194.035
+#Allow from 176.101.223.194
+Allow from 81.30.92.160
